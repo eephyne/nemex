@@ -203,7 +203,11 @@ progress {
 	padding-left: 35px;
 	padding-right: 35px;
 }
-
+.date-lastmodified {
+	font: 14px/0px "AvenirNext-Medium";
+	color: rgba(156,156,156,0.45);
+	text-transform: uppercase;
+}
 .content {
 	text-align: left;
 	

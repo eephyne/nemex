@@ -27,11 +27,11 @@ class NodeText extends Node {
 
 	public function edit($content) {
 		// Write the new file and delete the old
-		$newPath = dirname($this->path).'/'.self::getNewName($this->extension);
-
+//		$newPath = dirname($this->path).'/'.self::getNewName($this->extension);
+		$newPath = $this->path;
 		if( file_put_contents($newPath, $content) ) {
 			setFileMode($newPath);
-			$this->delete();
+		//	$this->delete();
 			$this->path = $newPath;
 		}
 	}

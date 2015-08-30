@@ -15,6 +15,7 @@
 				<p class="date">
 					<?php p(date(CONFIG::DATE_FORMAT, $node->getTimestamp()));?>
 				</p>
+
 				<div class="ncontent">
 					<?php if( $node instanceof NodeText ) {?>
 						<div class="content">

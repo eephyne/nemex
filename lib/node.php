@@ -27,9 +27,15 @@ class Node {
 	}
 
 	public function getTimestamp() {
-		return filemtime($this->path);
+		return explode('-',$this->getName())[0];
 	}
-
+	public function getLastModifiedTimestamp() {
+		if (date('Ymd',$this->getTimestamp()) != date('Ymd',filemtime($this->path))) {
+			return filemtime($this->path);
+		} else {
+			return null;
+		}
+	}	
 	protected static function getNewName($extension) {
 		return time().'-'.substr(md5(uniqid(rand(), true)),0, 8).'.'.$extension;
 	}

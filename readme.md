@@ -12,7 +12,7 @@ This repository marks the beginning of a complete rewrite. Currently, all the PH
 
 ### Usage
 
-rename config.php.examle to config.php
+rename config.php.examle to config.php.  
 Change the username and password in the `config.php` and upload all files to your server. 
 
 nemex expects to have a `projects/` directory to upload and save all files into. This directory needs to be writeable by PHP. On many shared hosters, this means you'll have to set the chmod to 0777. Also see the `FILE_CREATION_MODE` setting in the config.php.
