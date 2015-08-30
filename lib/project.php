@@ -4,12 +4,12 @@ require_once(NX_PATH.'lib/node-image.php');
 require_once(NX_PATH.'lib/node-text.php');
 
 class Project {
-	protected static $projectconfIndex ='
-<?php
-class PROJECTCONF {
-	const	ORDER = "DESC";
-}
-?>';
+	protected static $projectconfIndex ='<?php
+return array(
+	\'ORDER\' => \'DESC\',
+);
+?>
+';
 	protected static $dirProtectIndex = '<?php header( "HTTP/1.1 403 forbidden" );';
 	protected static $fileGlob = '*.{md,jpg,jpeg,png,gif}';
 	protected static $titleImageGlob = '*.{jpg,jpeg,png,gif}';
@@ -29,8 +29,10 @@ class PROJECTCONF {
 		mkdir($path.CONFIG::IMAGE_BIG_PATH);
 		setFileMode($path.CONFIG::IMAGE_BIG_PATH);
 		
-		file_put_contents($path.'index.php', self::$projectconfIndex.self::$dirProtectIndex);
+		file_put_contents($path.'index.php', self::$dirProtectIndex);
+		file_put_contents($path.'config.php', self::$projectconfIndex);
 		setFileMode($path.'index.php');
+		setFileMode($path.'config.php');
 
 		return Project::open($name);
 	}
@@ -155,10 +157,9 @@ class PROJECTCONF {
 
 	protected function getFiles() {
 		$files = saneGlob($this->path.self::$fileGlob, GLOB_BRACE);
-		require(NX_PATH.'projects/Journal/index.php');
-		$order = "DESC";
-		if (class_exists('PROJECTCONF') && defined('PROJECTCONF::ORDER')) {
-			$order = PROJECTCONF::ORDER;
+		$order = $this->getConf("ORDER");
+		if (!$order) {
+			$order = "DESC";
 		}	
 		if ($order == "ASC") {
 			sort($files);
@@ -169,6 +170,13 @@ class PROJECTCONF {
 		}
 
 		return $files;
+	}
+	protected function getConf($key) {
+		$conf = include(NX_PATH.'projects/'.$this->getName().'/config.php');
+		if (array_key_exists($key,$conf)) {
+			return $conf[$key];
+		}
+		return null;
 	}
 
 	public function createZIP($zipPath) {
