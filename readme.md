@@ -17,3 +17,9 @@ Change the username and password in the `config.php` and upload all files to you
 
 nemex expects to have a `projects/` directory to upload and save all files into. This directory needs to be writeable by PHP. On many shared hosters, this means you'll have to set the chmod to 0777. Also see the `FILE_CREATION_MODE` setting in the config.php.
 
+### Options
+
+When a project is created, a class PROJECTCONF is set inside the index.php file of the project.
+You can change settings inside:
+
+ORDER accept ASC DESC and RANDOM value, it determine how to sort nodes in the project

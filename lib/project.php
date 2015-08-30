@@ -3,8 +3,13 @@
 require_once(NX_PATH.'lib/node-image.php');
 require_once(NX_PATH.'lib/node-text.php');
 
-
 class Project {
+	protected static $projectconfIndex ='
+<?php
+class PROJECTCONF {
+	const	ORDER = "DESC";
+}
+?>';
 	protected static $dirProtectIndex = '<?php header( "HTTP/1.1 403 forbidden" );';
 	protected static $fileGlob = '*.{md,jpg,jpeg,png,gif}';
 	protected static $titleImageGlob = '*.{jpg,jpeg,png,gif}';
@@ -24,7 +29,7 @@ class Project {
 		mkdir($path.CONFIG::IMAGE_BIG_PATH);
 		setFileMode($path.CONFIG::IMAGE_BIG_PATH);
 		
-		file_put_contents($path.'index.php', self::$dirProtectIndex);
+		file_put_contents($path.'index.php', self::$projectconfIndex.self::$dirProtectIndex);
 		setFileMode($path.'index.php');
 
 		return Project::open($name);
@@ -150,7 +155,19 @@ class Project {
 
 	protected function getFiles() {
 		$files = saneGlob($this->path.self::$fileGlob, GLOB_BRACE);
-		rsort($files);
+		require(NX_PATH.'projects/Journal/index.php');
+		$order = "DESC";
+		if (class_exists('PROJECTCONF') && defined('PROJECTCONF::ORDER')) {
+			$order = PROJECTCONF::ORDER;
+		}	
+		if ($order == "ASC") {
+			sort($files);
+		} else if ($order == "RANDOM") {
+			shuffle($files);
+		} else {
+			rsort($files);
+		}
+
 		return $files;
 	}
 
